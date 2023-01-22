@@ -1,3 +1,4 @@
+//module.exports =
 module.exports = function check(str, bracketsConfig) {
   const openBrackets = ["(", "{", "[", "|", "1", "3", "5", "7", "8"];
   const bracketsPair = {
@@ -18,6 +19,7 @@ module.exports = function check(str, bracketsConfig) {
       let symbol = str[i];
       if (openBrackets.includes(symbol)) {
         stack.push(symbol);
+        console.log(stack, "push");
       } else {
         if (stack.length === 0) {
           return false;
@@ -27,12 +29,34 @@ module.exports = function check(str, bracketsConfig) {
 
         if (bracketsPair[symbol] === lastSymbol) {
           stack.pop();
+          console.log(stack, "pop");
         } else {
           return false;
         }
       }
     }
+    if (stack.includes("|") || stack.includes("7") || stack.includes("8")) {
+      for (k = 0; k < stack.length; k++) {
+        let stackSymbol = stack[k];
+        let lastStackSymbol = stack[stack.length - 1];
+        if (bracketsPair[stackSymbol] === lastStackSymbol) {
+          stack.splice(stack.indexOf(stack[k]));
+          stack.pop();
+          console.log(stack, "popStack2");
+        } else {
+          return false;
+        }
+      }
+    } else {
+      return stack.length === 0;
+    }
     return stack.length === 0;
   }
   return checkBrackets(str);
 };
+// console.log(
+//   check("|()|(||)||", [
+//     ["(", ")"],
+//     ["|", "|"],
+//   ])
+// );
